@@ -1,5 +1,5 @@
 
-# QStudyPlan
+# StudyPlan
 我的学习计划
 
 分布式相关的点：
