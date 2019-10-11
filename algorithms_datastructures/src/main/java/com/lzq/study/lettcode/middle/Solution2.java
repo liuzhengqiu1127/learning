@@ -100,35 +100,28 @@ public class Solution2 {
         }
         return true;
     }
-    private boolean judgeEvery(char ch, char[][] board,int row,int column)
-    {
+    private boolean judgeEvery(char ch, char[][] board,int row,int column) {
         if (ch == '.') return true;
-        for (int i = 0; i < board.length; i++){
-            if (row != i && board[i][column] == ch){
+        for (int i = 0; i < board.length; i++) {
+            if (row != i && board[i][column] == ch) {
                 return false;
             }
         }
-        for (int j = 0; j < board[0].length; j++){
-            if (column != j && board[row][j] == ch){
+        for (int j = 0; j < board[0].length; j++) {
+            if (column != j && board[row][j] == ch) {
                 return false;
             }
         }
-        int start_row = (row/3) * 3;
+        int start_row = (row / 3) * 3;
         int end_row = start_row + 2;
-        int start_column = (column/3) * 3;
+        int start_column = (column / 3) * 3;
         int end_column = start_column + 2;
-        for (int i = start_row; i <= end_row; i++){
-            for (int j = start_column; j <= end_column; j++){
+        for (int i = start_row; i <= end_row; i++) {
+            for (int j = start_column; j <= end_column; j++) {
                 if (i != row && j != column && board[i][j] == ch) return false;
             }
         }
         return true;
-    }
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> result = new ArrayList<>();
-        Arrays.sort(candidates);
-        if (target < candidates[0]) return result;
-        
     }
 
     public static void main(String[] args) {
