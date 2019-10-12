@@ -27,8 +27,9 @@ class Solution:
         nums.sort()
         used = [False] * len(nums)
         res = []
-        self.__dfs(nums,0,[],used,res)
+        self.__dfs(nums, 0, [], used, res)
         return res
+
     def __dfs(self, nums, index, pre, used, res):
         if index == len(nums):
             res.append(pre.copy())
@@ -46,7 +47,7 @@ class Solution:
 
 if __name__ == '__main__':
 
-    nums = [2,2,1,1]
+    nums = [2, 2, 1, 1]
     solution = Solution()
     output = solution.permuteUnique(nums)
     for out in output:
