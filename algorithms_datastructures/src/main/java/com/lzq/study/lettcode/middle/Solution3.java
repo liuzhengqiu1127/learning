@@ -66,6 +66,53 @@ public class Solution3 {
         }
     }
 
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int m = matrix.length;
+        if (m == 0) return new ArrayList<>();
+        int n = matrix[0].length;
+        List<Integer> res = new ArrayList<>();
+
+        int row_start = 0;
+        int row_end = m - 1;
+        int column_start = 0;
+        int column_end = n - 1;
+
+        while (row_start <= row_end && column_start <= column_end){
+            if (row_end == row_start){
+                for (int j = column_start; j <= column_end; j++){
+                    res.add(matrix[row_start][j]);
+                }
+                return res;
+            }
+            if (column_start == column_end){
+                for (int i = row_start; i <= row_end; i++){
+                    res.add(matrix[i][column_start]);
+                }
+                return res;
+            }
+            for (int j = column_start; j <= column_end; j++){
+                res.add(matrix[row_start][j]);
+            }
+            for (int i = row_start + 1; i <= row_end; i++){
+                res.add(matrix[i][column_end]);
+            }
+            for (int j = column_end - 1; j >= column_start; j--){
+                res.add(matrix[row_end][j]);
+            }
+            for (int i = row_end - 1; i > row_start; i--){
+                res.add(matrix[i][column_start]);
+            }
+
+            row_start++;
+            column_start++;
+            row_end--;
+            column_end--;
+        }
+
+        return res;
+
+    }
+
     public static void main(String[] args) {
         int[] nums = new int[]{1,1,2};
         List<List<Integer>> result = new Solution3().permuteUnique(nums);
