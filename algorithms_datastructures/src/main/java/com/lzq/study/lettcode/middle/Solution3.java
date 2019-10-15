@@ -1,9 +1,6 @@
 package com.lzq.study.lettcode.middle;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by liuzhengqiu on 2019/10/10.
@@ -177,13 +174,50 @@ public class Solution3 {
         }
         return lastPosition == 0;
     }
+    enum Index{
+        GOOD, BAD, UNKNOWN
+    }
+    public int[][] merge(int[][] intervals) {
+        List<Interval> intervalList = new ArrayList<>();
+        for (int i = 0; i < intervals.length; i++){
+            intervalList.add(new Interval(intervals[i][0],intervals[i][1]));
+        }
+        Collections.sort(intervalList,new IntervalComparator());
+        LinkedList<Interval> merged = new LinkedList<>();
+        for (Interval interval : intervalList){
+            if (merged.isEmpty()||merged.getLast().end < interval.start){
+                merged.add(interval);
+            }else {
+                merged.getLast().end = Math.max(merged.getLast().end, interval.end);
+            }
+        }
+        int[][] res = new int[merged.size()][2];
+        int i = 0;
+        for (Interval interval : merged){
+            res[i][0] = interval.start;
+            res[i][1] = interval.end;
+            i++;
+        }
+        return res;
+    }
+    class IntervalComparator implements Comparator<Interval>{
+        @Override
+        public int compare(Interval o1, Interval o2) {
+            return (o1.start < o2.start) ? -1 : (o1.start == o2.start ? 0:1);
+        }
+    }
+    class Interval{
+        int start;
+        int end;
+        Interval(int start, int end){
+            this.start = start;
+            this.end = end;
+        }
+    }
+
     public static void main(String[] args) {
         int[] nums = new int[]{1,1,2};
         List<List<Integer>> result = new Solution3().permuteUnique(nums);
         result.forEach(list -> System.out.println(list));
-    }
-
-    enum Index{
-        GOOD, BAD, UNKNOWN
     }
 }
