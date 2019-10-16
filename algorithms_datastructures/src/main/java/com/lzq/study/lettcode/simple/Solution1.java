@@ -118,4 +118,9 @@ public class Solution1 {
         }
         return strings[n];
     }
+    public int lengthOfLastWord(String s) {
+        if(s == null || s.trim().isEmpty()) return 0;
+        String[] strings = s.split(" ");
+        return strings[strings.length-1].length();
+    }
 }

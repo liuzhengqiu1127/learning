@@ -191,13 +191,7 @@ public class Solution3 {
                 merged.getLast().end = Math.max(merged.getLast().end, interval.end);
             }
         }
-        int[][] res = new int[merged.size()][2];
-        int i = 0;
-        for (Interval interval : merged){
-            res[i][0] = interval.start;
-            res[i][1] = interval.end;
-            i++;
-        }
+        int[][] res = getInts(merged);
         return res;
     }
     class IntervalComparator implements Comparator<Interval>{
@@ -213,6 +207,41 @@ public class Solution3 {
             this.start = start;
             this.end = end;
         }
+    }
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<Interval> res = new LinkedList<>();
+        int i = 0;
+        int n = intervals.length;
+        while (i < n && intervals[i][1] < newInterval[0]){ // 找到开始位置
+            res.add(new Interval(intervals[i][0],intervals[i][1]));
+            i++;
+        }
+        if (i == n){ // 最后都没有找到
+            res.add(new Interval(newInterval[0],newInterval[1]));
+            return getInts(res);
+        }
+        int start = Math.min(intervals[i][0],newInterval[0]); // 开始位置和区间开始位置比较
+        int end = newInterval[1]; // 结束位置
+        while (i < n && intervals[i][0] <= newInterval[1]){ //进行合并了
+            end = Math.max(newInterval[1],intervals[i][1]);
+            i++;
+        }
+        res.add(new Interval(start,end));
+        while (i < n){
+            res.add(new Interval(intervals[i][0],intervals[i][1]));
+            i++;
+        }
+        return getInts(res);
+    }
+    private int[][] getInts(List<Interval> merged) {
+        int[][] res = new int[merged.size()][2];
+        int i = 0;
+        for (Interval interval : merged){
+            res[i][0] = interval.start;
+            res[i][1] = interval.end;
+            i++;
+        }
+        return res;
     }
 
     public static void main(String[] args) {
