@@ -1,7 +1,11 @@
 package com.lzq.study.lettcode.middle;
 
+import com.lzq.study.lettcode.common.ListNode;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Solution4 {
 
@@ -84,6 +88,59 @@ public class Solution4 {
         }
         // 如果参数正确的话，代码不会走到这里
         throw new RuntimeException("参数错误");
+    }
+
+    public ListNode rotateRight(ListNode head, int k) {
+        int step = 0;
+        if (head == null || head.next == null) return head;
+        int size = 0;
+        ListNode bHead = head;
+        while (head != null){
+            size++;
+            head = head.next;
+        }
+        k = k % size;
+        while (step < k){
+            ListNode aHead = bHead;
+            ListNode tail = bHead;
+            while (tail.next.next != null){
+                tail = tail.next;
+            }
+            bHead = tail.next;
+            bHead.next = aHead;
+            tail.next = null;
+            step++;
+        }
+        return bHead;
+    }
+
+    Map<String,Integer> memo = new HashMap<>();
+    public int uniquePaths(int m, int n) {
+        if ( m == 1 || n == 1){
+            return 1;
+        }else {
+            if (memo.containsKey(m+""+n)){
+                return memo.get(m+""+n);
+            }
+            int result = uniquePaths(m-1,n) + uniquePaths(m, n - 1);
+            memo.put(m+""+n,result);
+            return result;
+        }
+    }
+
+    public static void main(String[] args) {
+        ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(2);
+        ListNode node3 = new ListNode(3);
+        ListNode node4 = new ListNode(4);
+        ListNode node5 = new ListNode(5);
+        node1.next = node2;
+        node2.next = node3;
+        node3.next = node4;
+        node4.next = node5;
+
+        ListNode head = new Solution4().rotateRight(node1,2);
+        System.out.println(head);
     }
 
 }
