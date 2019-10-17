@@ -114,18 +114,42 @@ public class Solution4 {
         return bHead;
     }
 
-    Map<String,Integer> memo = new HashMap<>();
     public int uniquePaths(int m, int n) {
-        if ( m == 1 || n == 1){
-            return 1;
-        }else {
-            if (memo.containsKey(m+""+n)){
-                return memo.get(m+""+n);
+        int[][] res = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0)
+                    res[0][j] = 1;
+                else if (j == 0)
+                    res[i][0] = 1;
+                else
+                    res[i][j] = res[i - 1][j] + res[i][j - 1];
             }
-            int result = uniquePaths(m-1,n) + uniquePaths(m, n - 1);
-            memo.put(m+""+n,result);
-            return result;
         }
+        return res[m - 1][n - 1];
+    }
+
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int rows = obstacleGrid.length;
+        int columns = obstacleGrid[0].length;
+        if (obstacleGrid[0][0] == 1) return 0;
+        obstacleGrid[0][0] = 1;
+        for (int i = 1; i < rows; i++){
+            obstacleGrid[i][0] = (obstacleGrid[i][0] == 0 && obstacleGrid[i-1][0] == 1) ? 1 : 0;
+        }
+        for (int j = 1; j < columns; j++){
+            obstacleGrid[0][j] = (obstacleGrid[0][j] == 0 && obstacleGrid[0][j-1] == 1) ? 1 : 0;
+        }
+        for (int i = 1; i < rows; i++){
+            for (int j = 1; j < columns; j++){
+                if (obstacleGrid[i][j] == 0){
+                    obstacleGrid[i][j] = obstacleGrid[i-1][j] + obstacleGrid[i][j-1];
+                }else {
+                    obstacleGrid[i][j] = 0;
+                }
+            }
+        }
+        return obstacleGrid[rows-1][columns-1];
     }
 
     public static void main(String[] args) {
