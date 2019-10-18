@@ -123,4 +123,81 @@ public class Solution1 {
         String[] strings = s.split(" ");
         return strings[strings.length-1].length();
     }
+
+    public int[] plusOne(int[] digits) {
+        int len = digits.length;
+        if (digits[len - 1] < 9){
+            digits[len - 1] += 1;
+            return digits;
+        }
+        int i = len - 1;
+        for (; i >= 0; i--){
+            if (digits[i] == 9){
+                digits[i] = 0;
+            }else {
+                digits[i] += 1;
+                break;
+            }
+        }
+        if ( i < 0){
+            int[] res = new int[len+1];
+            res[0] = 1;
+            return res;
+        }
+        return digits;
+    }
+
+    public String addBinary(String a, String b) {
+        int aIndex = a.length() - 1;
+        int bIndex = b.length() - 1;
+        int sum = 0;
+        StringBuilder res = new StringBuilder();
+        while (aIndex >= 0 && bIndex >= 0){
+            int two_sum = (Integer.valueOf(a.charAt(aIndex)) - 48) + (Integer.valueOf(b.charAt(bIndex)) - 48) + sum;
+            if (two_sum >= 2){
+                res.append(two_sum%2);
+                sum = 1;
+            }else {
+                res.append(two_sum);
+                sum = 0;
+            }
+            aIndex--;
+            bIndex--;
+        }
+        while (aIndex >= 0){
+            int two_sum = (Integer.valueOf(a.charAt(aIndex)) - 48) + sum;
+            if (two_sum == 2){
+                res.append(0);
+                sum = 1;
+            }else {
+                res.append(two_sum);
+                sum = 0;
+            }
+            aIndex--;
+        }
+        while (bIndex >= 0){
+            int two_sum = (Integer.valueOf(b.charAt(bIndex)) - 48) + sum;
+            if (two_sum == 2){
+                res.append(0);
+                sum = 1;
+            }else {
+                res.append(two_sum);
+                sum = 0;
+            }
+            bIndex--;
+        }
+        if (sum == 1){
+            res.append(1);
+        }
+        StringBuilder result = new StringBuilder();
+        for (int i = res.length()-1;i>=0;i--){
+            result.append(res.charAt(i));
+        }
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        String result = new Solution1().addBinary("10","110010");
+        System.out.println(result);
+    }
 }
