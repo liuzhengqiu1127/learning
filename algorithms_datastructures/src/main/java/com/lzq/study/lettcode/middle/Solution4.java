@@ -151,20 +151,29 @@ public class Solution4 {
         }
         return obstacleGrid[rows-1][columns-1];
     }
+    public int minPathSum(int[][] grid) {
+        int rows = grid.length;
+        int columns = grid[0].length;
+        int[][] res = new int[rows][columns];
+        res[0][0] = grid[0][0];
+        for (int i = 1; i < rows; i++){
+            res[i][0] = res[i-1][0] + grid[i][0];
+        }
+        for (int j = 1; j < columns; j++){
+            res[0][j] = res[0][j-1] + grid[0][j];
+        }
+        for (int i = 1; i < rows; i++){
+            for (int j = 1; j < columns; j++){
+                res[i][j] = Math.min(res[i-1][j],res[i][j-1]) + grid[i][j];
+            }
+        }
+        return res[rows-1][columns-1];
+    }
 
     public static void main(String[] args) {
-        ListNode node1 = new ListNode(1);
-        ListNode node2 = new ListNode(2);
-        ListNode node3 = new ListNode(3);
-        ListNode node4 = new ListNode(4);
-        ListNode node5 = new ListNode(5);
-        node1.next = node2;
-        node2.next = node3;
-        node3.next = node4;
-        node4.next = node5;
-
-        ListNode head = new Solution4().rotateRight(node1,2);
-        System.out.println(head);
+        int[][] grid = new int[][]{{1,2},{5,6},{1,1}};
+        int result = new Solution4().minPathSum(grid);
+        System.out.println(result);
     }
 
 }
