@@ -196,6 +196,12 @@ public class Solution1 {
         return result.toString();
     }
 
+    public int climbStairs(int n) {
+        if (n==1) return 1;
+        if (n == 2) return 2;
+        return 0;
+    }
+
     public static void main(String[] args) {
         String result = new Solution1().addBinary("10","110010");
         System.out.println(result);
