@@ -11,10 +11,10 @@
     </parent>
 
     <groupId>com.lzq.spring.cloud</groupId>
-    <artifactId>service</artifactId>
+    <artifactId>spring_cloud</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>service</name>
+    <name>spring_cloud</name>
     <description>Demo project for Spring Cloud</description>
 
     <properties>
@@ -51,6 +51,7 @@
     <modules>
         <module>eureka</module>
         <module>zuul</module>
+        <module>config</module>
     </modules>
 
     <repositories>
