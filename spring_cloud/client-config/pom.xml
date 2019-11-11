@@ -7,11 +7,11 @@
 		<artifactId>spring_cloud</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.lzq.spring.cloud</groupId>
-	<artifactId>config</artifactId>
+	<groupId>com.lzq.spring.cloud.config.client</groupId>
+	<artifactId>client-config</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>config</name>
-	<description>Config Demo project for Spring Boot</description>
+	<name>client-config</name>
+	<description>client config Demo project for Spring Boot</description>
 
 	<dependencies>
 		<dependency>
@@ -19,8 +19,12 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-config-server</artifactId>
+			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 	</dependencies>
 

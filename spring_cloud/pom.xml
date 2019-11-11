@@ -52,6 +52,7 @@
         <module>eureka</module>
         <module>zuul</module>
         <module>config</module>
+        <module>client-config</module>
     </modules>
 
     <repositories>
