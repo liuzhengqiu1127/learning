@@ -3,14 +3,26 @@ server:
 spring:
   application:
     name: spring-cloud-config-server
+  profiles:
+    active: jdbc
   cloud:
     config:
       server:
-        git:
-          uri: https://github.com/liuzhengqiu1127/learning/   # 配置git仓库的地址
-          search-paths: config-repo                             # git仓库地址下的相对地址，可以配置多个，用,分割。
-          username:       # git仓库的账号
-          password:    # git仓库的密码
+        default-label: dev
+        jdbc:
+          sql: SELECT `KEY`, `VALUE` from PROPERTIES where APPLICATION=? and `PROFILE`=? and LABEL=?
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mytest?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: Qiu19871127@&
+
+  #        git:
+#          uri: https://github.com/liuzhengqiu1127/learning/   # 配置git仓库的地址
+#          search-paths: config-repo                             # git仓库地址下的相对地址，可以配置多个，用,分割。
+#          username:       # git仓库的账号
+#          password:    # git仓库的密码
   rabbitmq:
     host: localhost
     port: 5672
