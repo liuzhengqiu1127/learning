@@ -7,3 +7,14 @@ spring:
     name: zuul-service
 server:
   port: 8081
+zuul:
+  retryable: true
+ribbon:
+  MaxAutoRetries: 2
+  MaxAutoRetriesNextServer: 0
+#zuul:
+#  routes:
+#    hello:
+#      path: /**
+#      serviceId: spring-cloud-web
+#      url: http://localhost:9000/
