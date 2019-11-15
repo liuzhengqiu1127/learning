@@ -12,6 +12,12 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RequestMapping("/web")
 public class WebController {
+    @GetMapping("/other")
+    public String hello2(@RequestParam(value = "name")String name)
+    {
+        log.info("request first name is " + name);
+        return "hello2 "+name + ",this is first message.";
+    }
     @GetMapping("/hello")
     public String hello(@RequestParam(value = "name")String name)
     {

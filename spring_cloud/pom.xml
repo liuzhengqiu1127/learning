@@ -57,6 +57,7 @@
     <modules>
         <module>eureka</module>
         <module>zuul</module>
+        <module>gateway</module>
         <module>config</module>
         <module>client-config</module>
         <module>web</module>
