@@ -58,8 +58,8 @@ public class ProducerFallback implements FallbackProvider {
 
     @Override
     public ClientHttpResponse fallbackResponse(String route, Throwable cause) {
-        if (cause != null && cause.getCause() != null) {
-            String reason = cause.getCause().getMessage();
+        if (cause != null) {
+            String reason = cause.getMessage();
             log.info("{} Exception {}",route,reason);
         }
         return fallbackResponse();
