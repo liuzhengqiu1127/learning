@@ -8,16 +8,24 @@ spring:
       discovery:
         locator:
           enabled: true
+      routes:
+        - id: add_request_parameter_router
+          uri: lb://spring-cloud-web
+#          uri: http://localhost:9000
+          filters:
+            - AddRequestParameter=foo, bar
+          predicates:
+            - Method=GET
 #  cloud:
 #    gateway:
 #      routes:
 #        - id: neo_route
 #          uri: http://www.ityouknow.com
 #          predicates:
-#            - Path=/spring-cloud #Â·¾¶Æ¥Åä
-#            - After=2019-11-15T13:06:06+08:00[Asia/Shanghai]  # Ê±¼äÆ¥Åä >=
-#            - Before=2019-12-20T06:06:06+08:00[Asia/Shanghai] # Ê±¼äÆ¥Åä <=
-#            - Between=2019-01-20T06:06:06+08:00[Asia/Shanghai], 2020-01-20T06:06:06+08:00[Asia/Shanghai] #ÖÐ¼ä
+#            - Path=/spring-cloud #Â·ï¿½ï¿½Æ¥ï¿½ï¿½
+#            - After=2019-11-15T13:06:06+08:00[Asia/Shanghai]  # Ê±ï¿½ï¿½Æ¥ï¿½ï¿½ >=
+#            - Before=2019-12-20T06:06:06+08:00[Asia/Shanghai] # Ê±ï¿½ï¿½Æ¥ï¿½ï¿½ <=
+#            - Between=2019-01-20T06:06:06+08:00[Asia/Shanghai], 2020-01-20T06:06:06+08:00[Asia/Shanghai] #ï¿½Ð¼ï¿½
 
 eureka:
   client:
