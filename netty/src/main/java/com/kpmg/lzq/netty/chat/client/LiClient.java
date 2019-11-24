@@ -1,6 +1,10 @@
 package com.kpmg.lzq.netty.chat.client;
 
+import com.kpmg.lzq.netty.chat.common.MsgRepository;
+import com.kpmg.lzq.netty.chat.protocal.codec.PacketCodeC;
+import com.kpmg.lzq.netty.chat.protocal.packet.MsgPacket;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -11,6 +15,8 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import static com.kpmg.lzq.netty.chat.common.MsgConstant.MSG_SESSION_TWO;
 
 /**
  * @author switch
@@ -24,7 +30,10 @@ public class LiClient {
 
     public static void main(String[] args) {
         Bootstrap bootstrap = LiClient.bootstrap();
-        connect(bootstrap, HOST, PORT, MAX_RETRY);
+        ChannelFuture channelFuture = connect(bootstrap, HOST, PORT, MAX_RETRY);
+        MsgPacket msgPacket = MsgRepository.getInstance().getLiMsgPacket(MSG_SESSION_TWO);
+        ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(msgPacket);
+        channelFuture.channel().writeAndFlush(byteBuf);
     }
 
     public static Bootstrap bootstrap() {

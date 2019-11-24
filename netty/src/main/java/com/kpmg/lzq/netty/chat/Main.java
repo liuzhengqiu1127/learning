@@ -11,8 +11,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.kpmg.lzq.netty.chat.client.LiClient.*;
-import static com.kpmg.lzq.netty.chat.common.MsgConstant.COUNT_LEVEL_3;
 import static com.kpmg.lzq.netty.chat.common.MsgConstant.*;
 
 public class Main {
@@ -23,6 +24,7 @@ public class Main {
         ChannelFuture clientChannelFuture = LiClient.connect(clientBootstrap, HOST, PORT, MAX_RETRY);
         serverChannelFuture.await();
         clientChannelFuture.await();
+        TimeUnit.SECONDS.sleep(1);
         for (int i = 0; i < COUNT_LEVEL_3; i++) {
             MsgPacket one = MsgRepository.getInstance().getZhangMsgPacket(MSG_SESSION_ONE);
             MsgPacket two = MsgRepository.getInstance().getLiMsgPacket(MSG_SESSION_TWO);

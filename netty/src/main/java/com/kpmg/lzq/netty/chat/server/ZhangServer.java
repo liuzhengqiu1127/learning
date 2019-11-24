@@ -1,6 +1,10 @@
 package com.kpmg.lzq.netty.chat.server;
 
+import com.kpmg.lzq.netty.chat.common.MsgRepository;
+import com.kpmg.lzq.netty.chat.protocal.codec.PacketCodeC;
+import com.kpmg.lzq.netty.chat.protocal.packet.MsgPacket;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,6 +17,9 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.kpmg.lzq.netty.chat.client.LiClient.HOST;
+import static com.kpmg.lzq.netty.chat.common.MsgConstant.MSG_SESSION_ONE;
 
 public class ZhangServer {
     private static final Map<String, Channel> CHANNEL_MAPPING = new ConcurrentHashMap<>();

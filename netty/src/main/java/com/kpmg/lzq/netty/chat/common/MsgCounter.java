@@ -8,7 +8,7 @@ public class MsgCounter {
     private static AtomicInteger counter = new AtomicInteger();
     private static Long startTime;
     private static final Object LOCK = new Object();
-    private static Map<Integer,Long> countTimeMapping = new LinkedHashMap<Integer,Long>(3);
+    private static Map<Integer,Long> countTimeMapping = new LinkedHashMap<>(3);
 
     public static void start() {
         if (MsgCounter.startTime == null) {

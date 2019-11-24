@@ -8,7 +8,7 @@ public interface MsgConstant {
     int USER_ID_ZHANG = 1;
     int USER_ID_LI = 2;
 
-    int COUNT_LEVEL_1 = 10000;
-    int COUNT_LEVEL_2 = 100000;
-    int COUNT_LEVEL_3 = 1000000;
+    int COUNT_LEVEL_1 = 10;
+    int COUNT_LEVEL_2 = 20;
+    int COUNT_LEVEL_3 = 30;
 }
