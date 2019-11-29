@@ -103,23 +103,78 @@ public class OneSixTwoCompetition {
 
 
     public int closedIsland(int[][] grid) {
-        Set<String> stringSet = new HashSet<>();
-        int rowLen = grid.length;
-        int columnLen = grid[0].length;
-        for (int i=0;i<rowLen;i++){
-            for (int j=0;j<columnLen;j++)
-                if (grid[i][j] == 0) stringSet.add(i+""+j);
-        }
-        int sum = 0;
-        for (int i=0;i<rowLen;i++){
-            for (int j=0;j<columnLen;j++) {
-                if (grid[i][j] == 0) {
-                   boolean flag = !stringSet.contains(i-1 + "" +j) && !stringSet.contains(i+1 + "" +j)
-                           && !stringSet.contains(i + "" + (j-1)) && !stringSet.contains(i + "" + (j+1));
-                   if (flag) sum++;
+        int ret = 0;
+        for (int i = 0; i < grid.length; i++){
+            for (int j = 0; j < grid[0].length; j++){
+                if (grid[i][j] == 0){
+                    ret += dfs(grid,i,j);
                 }
             }
         }
-        return sum;
+        return ret;
     }
+    private int dfs(int[][] grid, int r, int c){
+        if (r < 0 || r >= grid.length || c < 0 || c>= grid[0].length){
+            return 0;
+        }
+        if (grid[r][c] == 1){
+            return 1;
+        }
+        grid[r][c] = 1;
+        int[] vr = {0,1,0,-1};
+        int[] vc = {1,0,-1,0};
+        int ret = 1;
+        for (int i = 0; i < 4; i++){
+            ret = Math.min(ret,dfs(grid,r+vr[i],c+vc[i]));
+        }
+        return ret;
+    }
+
+    @Test
+    public void test04(){
+        String[] words = {"dog","cat","dad","good"};
+        char[] letters = {'a','a','c','d','d','d','g','o','o'};
+        int[] score = {1,0,9,5,0,0,3,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0};
+        Assert.assertTrue(maxScoreWords(words,letters,score)==23);
+    }
+    public int maxScoreWords(String[] words, char[] letters, int[] score) {
+        int[] l = new int[26];
+        for (char c : letters){
+            l[c - 'a']++;//记录已有字符出现的次数
+        }
+        int ans = 0;
+        // 1 << words.length 表示words有多少选择的子集
+        for (int i = 0; i < (1 << words.length); i++){
+            int[] g = group(words,i); // 记录每一个子集中字符出现的次数
+            int temp = 0;
+            for (int j = 0; j< 26; j++){
+                if (l[j] < g[j]){ //某个字符出现的次数，已经大于已有字符的次数
+                    temp = 0;
+                    break;
+                }else {
+                    temp += g[j] * score[j]; // 记录字符次数*分数 = 总得分
+                }
+            }
+            ans = Integer.max(ans,temp);
+        }
+        return ans;
+    }
+
+    /**
+     * 此次选中了哪几个词
+     * @param words
+     * @param bit
+     * @return
+     */
+    private int[] group(String[] words, int bit){
+        int[] g = new int[26];
+        for (int i = 0; i < words.length; i++){
+            if ( (bit & (1 << i)) != 0 ){
+                for (char c : words[i].toCharArray())
+                    g[c - 'a']++;//记录每个字符出现的次数
+            }
+        }
+        return g;
+    }
+
 }
