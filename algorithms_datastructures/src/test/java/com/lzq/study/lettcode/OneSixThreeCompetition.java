@@ -1,5 +1,6 @@
 package com.lzq.study.lettcode;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -48,5 +49,26 @@ public class OneSixThreeCompetition {
                 grid[i][j] = every[i][j];
             }
         }
+    }
+
+    @Test
+    public void test02(){
+        int[] nums = {3,6,5,1,8};
+        Assert.assertTrue(maxSumDivThree(nums)==18);
+    }
+
+    public int maxSumDivThree(int[] nums) {
+        int dp[] = {0,0,0};//动态规划的一种算法
+        for (int i = 0; i < nums.length; ++i){
+            int mod = nums[i] % 3; //取模：0，1，2
+            int a = dp[(3 + 0 - mod)%3];
+            int b = dp[(3 + 1 - mod)%3];
+            int c = dp[(3 + 2 - mod)%3];
+
+            if (a != 0 || mod == 0) dp[0] = Integer.max(dp[0],a + nums[i]);//表示选取的数字类加和 % 3 = 0 的数字和
+            if (b != 0 || mod == 1) dp[1] = Integer.max(dp[1],b + nums[i]); //表示选取的数字类加和 % 3 = 1 的数字和
+            if (c != 0 || mod == 2) dp[2] = Integer.max(dp[2],c + nums[i]); //表示选取的数字类加和 % 3 = 2 的数字和
+        }
+        return dp[0];
     }
 }
