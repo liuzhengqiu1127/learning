@@ -3,6 +3,11 @@ package com.lzq.study.lettcode;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 
 public class OneSixFourCompetition {
 
@@ -106,4 +111,30 @@ public class OneSixFourCompetition {
         }
         return false;
     }
+    @Test
+    public void test003(){
+        String[] products = {"mobile","mouse","moneypot","monitor","mousepad"};
+        System.out.println(suggestedProducts(products,"mouse"));
+    }
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        Arrays.sort(products);
+        int size = 3;
+        List<List<String>> result = new ArrayList<>();
+        for (int i=0; i < searchWord.length(); i++){
+            List<String> everyResult = new ArrayList<>();
+            for (String product : products){
+                if (product.startsWith(searchWord.substring(0,i+1))){
+                    everyResult.add(product);
+                }
+                if (size == 0){
+                    break;
+                }
+                if (everyResult.size() >= size) break;
+            }
+            size = everyResult.size();
+            result.add(everyResult);
+        }
+        return result;
+    }
+
 }
