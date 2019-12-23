@@ -3,6 +3,10 @@ package com.lzq.study.lettcode;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by liuzhengqiu on 2019/12/22.
  */
@@ -70,4 +74,51 @@ public class OneSixFiveCompetition {
         return false;
     }
 
+    @Test
+    public void test02(){
+        System.out.println(numOfBurgers(16,7));
+        System.out.println(numOfBurgers(17,4));
+        System.out.println(numOfBurgers(4,17));
+        System.out.println(numOfBurgers(0,0));
+        System.out.println(numOfBurgers(2,1));
+    }
+    public List<Integer> numOfBurgers(int tomatoSlices, int cheeseSlices) {
+        boolean condition = tomatoSlices > 4 * cheeseSlices
+                || tomatoSlices < 2 * cheeseSlices
+                || tomatoSlices%2 != 0;
+        if (condition) return new ArrayList<>();
+        return Arrays.asList((tomatoSlices-2*cheeseSlices)/2,(4*cheeseSlices-tomatoSlices)/2);
+    }
+
+    @Test
+    public void test03(){
+        int[][] matrix = {{0,1,1,1},{1,1,1,1},{0,1,1,1}};
+        Assert.assertTrue(countSquares(matrix)==15);
+    }
+    public int countSquares(int[][] matrix) {
+        int rows = matrix.length;
+        int columns = matrix[0].length;
+        int len = Integer.min(rows,columns);
+        boolean[][][] dp = new boolean[rows][columns][len];
+        int result = 0;
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++)
+            {
+                dp[i][j][0] = (matrix[i][j]==1);
+                result += matrix[i][j];
+            }
+        }
+        for (int i = 1; i < rows; i++) {
+            for (int j = 1; j < columns; j++) {
+                for (int k = 1; k < len; k++){
+                    dp[i][j][k] = (matrix[i][j]==1)
+                            && dp[i-1][j][k-1]
+                            && dp[i-1][j-1][k-1]
+                            && dp[i][j-1][k-1];
+                    result += (dp[i][j][k]?1:0);
+                }
+            }
+        }
+        return result;
+    }
 }
