@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -40,12 +43,24 @@ public class UserInfoController {
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(userExtInfo,userInfo);
         userInfoService.save(userInfo);
-        RoleInfo roleInfo = roleInfoService.getOne(new QueryWrapper<>(new RoleInfo().setRoleName(userExtInfo.getRoleName())));
+        QueryWrapper<RoleInfo> roleInfoWrapper = new QueryWrapper<>();
+        roleInfoWrapper.in("ROLE_NAME",userExtInfo.getRoleNames());
+        List<RoleInfo> roleInfoList = roleInfoService.list(roleInfoWrapper);
         UserInfo dbUserInfo = userInfoService.getOne(new QueryWrapper<>(userInfo));
-        UserRoleRelation userRoleRelation = new UserRoleRelation();
-        userRoleRelation.setRoleId(roleInfo.getRoleId());
-        userRoleRelation.setUserId(dbUserInfo.getUserId());
-        userRoleRelationService.save(userRoleRelation);
+        Long userId = dbUserInfo.getUserId();
+        List<Long> roleIds = roleInfoList.stream().map(roleInfo -> roleInfo.getRoleId()).collect(Collectors.toList());
+        List<UserRoleRelation> userRoleRelations = new ArrayList<>();
+        for (Long roleId : roleIds){
+            userRoleRelations.add(UserRoleRelation.builder().roleId(roleId).userId(userId).build());
+        }
+        userRoleRelationService.saveBatch(userRoleRelations);
+    }
+
+    @PostMapping("/update")
+    @Transactional
+    public void update(@RequestBody UserExtInfo userExtInfo){
+        delete(userExtInfo.getUserId());
+        addUserInfo(userExtInfo);
     }
 
     @DeleteMapping("/delete")
@@ -57,6 +72,18 @@ public class UserInfoController {
     @PostMapping("/query")
     public List<UserInfo> query(@RequestBody UserInfo userInfo){
         return userInfoService.list(new QueryWrapper<>(userInfo));
+    }
+
+    @GetMapping("/detail")
+    public UserExtInfo detail(@RequestParam(value = "userId")Long userId){
+        UserExtInfo userExtInfo = (UserExtInfo) userInfoService.getById(userId);
+        List<UserRoleRelation> userRoleRelationList =
+                userRoleRelationService.list(new QueryWrapper<>(UserRoleRelation.builder().userId(userId).build()));
+        List<Long> roleIds = userRoleRelationList.stream().map(userRoleRelation -> userRoleRelation.getRoleId()).collect(Collectors.toList());
+        Collection<RoleInfo> roleInfoCollection = roleInfoService.listByIds(roleIds);
+        List<String> roleNames = roleInfoCollection.stream().map(roleInfo -> roleInfo.getRoleName()).collect(Collectors.toList());
+        userExtInfo.setRoleNames(roleNames);
+        return userExtInfo;
     }
 
 }

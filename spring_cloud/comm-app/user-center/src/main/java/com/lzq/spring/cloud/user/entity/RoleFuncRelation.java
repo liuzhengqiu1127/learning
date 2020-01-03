@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -19,6 +20,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@NoArgsConstructor
 public class RoleFuncRelation extends Model<RoleFuncRelation> {
 
     private static final long serialVersionUID=1L;
@@ -32,6 +34,10 @@ public class RoleFuncRelation extends Model<RoleFuncRelation> {
     @TableField("FUNC_ID")
     private Long funcId;
 
+    public RoleFuncRelation(Long roleId,Long funcId){
+        this.roleId = roleId;
+        this.funcId = funcId;
+    }
 
     public static final String ID = "ID";
 
