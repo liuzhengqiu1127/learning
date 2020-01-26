@@ -134,20 +134,21 @@ public class OneSevenThreeCompetition {
         Assert.assertTrue(minDifficulty(new int[]{6,5,4,3,2,1},2)==7);
     }
 
-    int hard[][] = new int[300][300];
+    int hard[][];
     public int minDifficulty(int[] jobDifficulty, int d) {
         if (jobDifficulty.length < d) return -1;
+        hard = new int[300][300];
         int dp[][] = new int[300][11];
         int i, j;
         for (i=1; i <= d; i++){
             for (j=0; j < jobDifficulty.length; j++){
-                if (i == 1){
+                if (i == 1){ // 1天完成
                     if (j == 0) dp[0][1] = jobDifficulty[0];
                     else dp[j][1] = Integer.max(jobDifficulty[j],dp[j-1][1]);
                 }else{
                     int k;
                     for (k = i - 2; k < j; k++){
-                        if (k == i - 2) dp[j][i] = dp[k][i-1] + maxHard(k+1,j,jobDifficulty);
+                        if (k == i - 2) dp[j][i] = dp[k][i-1] + maxHard(k+1,j,jobDifficulty);//初始化值 dp[j][i]; i-1天至少要完成 i-1项工作所以 index = i - 2
                         else dp[j][i] = Integer.min(dp[j][i],dp[k][i-1]+maxHard(k+1,j,jobDifficulty));
                     }
                 }
