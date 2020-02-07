@@ -80,7 +80,38 @@ public class OneSevenFourCompetition {
     public void test03(){
 
     }
-    
+    public int maxJumps(int[] arr, int d) {
+        int n = arr.length;
+        List<List<Integer>> temp = new ArrayList<>();
+       int[] dp = new int[n];
+        int res = 1;
+        for (int i = 0; i < n; i++){
+            List<Integer> inst = new ArrayList<>();
+            inst.add(arr[i]);
+            inst.add(i);
+            temp.add(inst);
+        }
+        Collections.sort(temp, new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                return o1.get(0).compareTo(o2.get(0));
+            }
+        });
+        for (int i = 0; i < n; i++){
+            int index = temp.get(i).get(1);
+            dp[index] = 1;
+            for (int j = index - 1; j >= index-d && j >= 0; j--){
+                if (arr[j] >= arr[index]) break;
+                if (dp[j] != 0) dp[index] = Integer.max(dp[index],dp[j]+1);
+            }
+            for (int j = index + 1; j <= index+d && j < n; j++){
+                if (arr[j] >= arr[index]) break;
+                if (dp[j] != 0) dp[index] = Integer.max(dp[index],dp[j]+1);
+            }
+            res = Integer.max(dp[index],res);
+        }
+        return res;
+    }
 
     @Test
     public void test04(){
