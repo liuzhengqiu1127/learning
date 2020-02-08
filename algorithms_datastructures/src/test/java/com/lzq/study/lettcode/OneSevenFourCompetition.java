@@ -1,5 +1,6 @@
 package com.lzq.study.lettcode;
 
+import com.lzq.study.lettcode.process.TreeNode;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -78,8 +79,39 @@ public class OneSevenFourCompetition {
     }
     @Test
     public void test03(){
-
+        TreeNode node1 = new TreeNode(1);
+        TreeNode node2 = new TreeNode(2);
+        TreeNode node3 = new TreeNode(3);
+        TreeNode node4 = new TreeNode(4);
+        TreeNode node5 = new TreeNode(5);
+        TreeNode node6 = new TreeNode(6);
+        node1.left = node2; node1.right = node3;
+        node2.left = node4; node2.right = node5;node3.left = node6;
+        Assert.assertTrue(maxProduct(node1)==110);
     }
+
+    private static final long mod = 1000000007;
+    private long ret = 0;
+    public int maxProduct(TreeNode root) {
+        long rootSum = calRootSum(root);
+        ret = 0;
+        subTreeSum(root,rootSum);
+        return (int) (ret % mod);
+    }
+    private long calRootSum(TreeNode root){
+        if (root == null) return 0;
+        return root.val + calRootSum(root.left) + calRootSum(root.right);
+    }
+    private long subTreeSum(TreeNode root, long rootSum)
+    {
+        if (root == null) return 0;
+        long leftSum = subTreeSum(root.left,rootSum);
+        long rightSum = subTreeSum(root.right,rootSum);
+        long subSum = root.val + leftSum + rightSum;
+        ret = Long.max(ret,(rootSum - subSum) * subSum);
+        return subSum;
+    }
+
     public int maxJumps(int[] arr, int d) {
         int n = arr.length;
         List<List<Integer>> temp = new ArrayList<>();
@@ -97,6 +129,7 @@ public class OneSevenFourCompetition {
                 return o1.get(0).compareTo(o2.get(0));
             }
         });
+
         for (int i = 0; i < n; i++){
             int index = temp.get(i).get(1);
             dp[index] = 1;
