@@ -1,4 +1,4 @@
-package com.lzq.study.lettcode;
+package com.lzq.study.lettcode.onesix;
 
 import com.lzq.study.lettcode.common.ListNode;
 import org.junit.Assert;

@@ -1,4 +1,4 @@
-package com.lzq.study.lettcode;
+package com.lzq.study.lettcode.onesix;
 
 import org.junit.Assert;
 import org.junit.Test;

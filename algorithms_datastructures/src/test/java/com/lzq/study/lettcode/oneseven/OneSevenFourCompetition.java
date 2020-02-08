@@ -1,4 +1,4 @@
-package com.lzq.study.lettcode;
+package com.lzq.study.lettcode.oneseven;
 
 import com.lzq.study.lettcode.process.TreeNode;
 import org.junit.Assert;
