@@ -118,4 +118,48 @@ public class OneSevenEightCompetition {
         if (head.val != node.val) return false;
         return isSub(head.next,node.left) || isSub(head.next, node.right);
     }
+
+    @Test
+    public void test04(){
+        Assert.assertTrue(minCost(new int[][]{{1,1,1,1},{2,2,2,2},{1,1,1,1},{2,2,2,2}})==3);
+    }
+
+    /**
+     * BFS遍历
+     * @param grid
+     * @return
+     */
+    public int minCost(int[][] grid) {
+        int rows = grid.length;
+        int columns = grid[0].length;
+        int dst[][] = new int[rows][columns];
+        int d[][] = {{},{0,1},{0,-1},{1,0},{-1,0}};
+        for (int i = 0; i < rows; i++){
+            Arrays.fill(dst[i], -1);
+        }
+        Queue<int[]> queue = new LinkedList<>(); //定义Queue
+        queue.offer(new int[]{0,0,0});//行，列，当前cost 添加初始值
+        while (!queue.isEmpty()){//判断queue是否为空
+            int x = queue.size(); // 记录每次遍历的大小
+            for (int i=0; i < x; i++){
+                int q[] = queue.poll();
+                if (q[0] == rows-1 && q[1] == columns-1){
+                    continue;
+                }
+                int val = grid[q[0]][q[1]];
+                for (int j=1; j <=4; j++){
+                    int row = q[0] + d[j][0];
+                    int column = q[1] + d[j][1];
+                    if (row >= 0 && column >=0 && row < rows && column < columns){
+                        int add = (j==val?0:1);
+                        if (dst[row][column]==-1 || dst[row][column] > q[2] + add){
+                            dst[row][column] = q[2] + add;
+                            queue.offer(new int[]{row,column,dst[row][column]});
+                        }
+                    }
+                }
+            }
+        }
+        return Math.max(0, dst[rows - 1][columns - 1]);
+    }
 }
