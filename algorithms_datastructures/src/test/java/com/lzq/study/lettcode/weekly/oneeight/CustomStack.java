@@ -1,4 +1,4 @@
-package com.lzq.study.lettcode.oneeight;
+package com.lzq.study.lettcode.weekly.oneeight;
 
 public class CustomStack {
     private int[] stackArray;

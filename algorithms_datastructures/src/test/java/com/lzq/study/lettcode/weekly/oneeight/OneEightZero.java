@@ -1,6 +1,6 @@
-package com.lzq.study.lettcode.oneeight;
+package com.lzq.study.lettcode.weekly.oneeight;
 
-import com.lzq.study.lettcode.process.TreeNode;
+import com.lzq.study.lettcode.weekly.process.TreeNode;
 import org.junit.Assert;
 import org.junit.Test;
 

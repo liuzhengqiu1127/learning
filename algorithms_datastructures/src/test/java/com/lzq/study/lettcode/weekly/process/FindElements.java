@@ -1,4 +1,4 @@
-package com.lzq.study.lettcode.process;
+package com.lzq.study.lettcode.weekly.process;
 
 import java.util.HashSet;
 

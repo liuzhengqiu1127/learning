@@ -1,4 +1,4 @@
-package com.lzq.study.lettcode.process;
+package com.lzq.study.lettcode.weekly.process;
 
 /**
  * Created by liuzhengqiu on 2019/12/1.

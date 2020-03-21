@@ -1,4 +1,4 @@
-package com.lzq.study.lettcode.onesix;
+package com.lzq.study.lettcode.weekly.onesix;
 
 import org.junit.Assert;
 import org.junit.Test;
