@@ -85,6 +85,19 @@ public class OneEightTwo {
         return sum/count;
     }
 
+    /**
+     *
+     * @param n
+     * @param s1
+     * @param s2
+     * @param evil
+     * @return
+     */
+    public int findGoodStrings(int n, String s1, String s2, String evil)
+    {
+        return 0;
+    }
+
     @Test
     public void test(){
         System.out.println("abd".compareTo("abc"));
