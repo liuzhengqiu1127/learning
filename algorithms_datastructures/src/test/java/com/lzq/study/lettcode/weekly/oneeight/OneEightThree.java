@@ -77,7 +77,7 @@ public class OneEightThree {
         return stringBuilder.reverse().toString();
     }
 
-    
+
     public String longestDiverseString(int a, int b, int c) {
         MyChar[] myChars = new MyChar[]{
                 new MyChar('a', a),
