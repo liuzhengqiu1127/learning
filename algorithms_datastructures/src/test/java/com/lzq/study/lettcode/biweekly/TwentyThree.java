@@ -90,42 +90,23 @@ public class TwentyThree {
         Assert.assertTrue(checkOverlap(1415,807,-784,-733,623,-533,1005));
     }
 
-    private int invalid = Integer.MIN_VALUE;
     public int maxSatisfaction(int[] satisfaction) {
         Arrays.sort(satisfaction);
-        if (satisfaction[satisfaction.length-1]<=0) return 0;
-        judge(satisfaction,0,0,satisfaction.length-1,0);
-        List<Integer> result = new ArrayList<>();
-        for (int i=0; i<satisfaction.length; i++){
-            if (satisfaction[i] == invalid) continue;
-            result.add(satisfaction[i]);
-        }
+        int n = satisfaction.length;
         int sum = 0;
-        int k = 1;
-        for (Integer integer : result){
-            sum += integer * k;
-            k++;
-        }
-        return sum;
-    }
-    private void judge(int[] satisfaction,int beginIndex, int firstIndex, int lastIndex, int sum){
-        if (sum <= 0){
-            for (int i=beginIndex; i<firstIndex; i++){
-                satisfaction[i] = invalid;
+        int ans = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            if (sum + satisfaction[i] > 0) {
+                sum += satisfaction[i];
+                ans += sum;
+            } else {
+                break;
             }
-            sum = 0;
-            beginIndex = firstIndex;
-            lastIndex = satisfaction.length-1;
         }
-        if (satisfaction[firstIndex] >= 0) return;
-        if (firstIndex >= lastIndex) return;
-        judge(satisfaction,beginIndex, firstIndex+1,lastIndex-1,sum+satisfaction[firstIndex]+satisfaction[lastIndex]);
+        return ans;
     }
     @Test
     public void test03(){
-//        Assert.assertTrue(maxSatisfaction(new int[]{-1,-8,0,5,-9})==14);
-//        Assert.assertTrue(maxSatisfaction(new int[]{4,3,2})==20);
-//        Assert.assertTrue(maxSatisfaction(new int[]{-1,-4,-5})==0);
         Assert.assertTrue(maxSatisfaction(new int[]{10,7,-7,-10,9,5,5,-5,-10,8,-8})==286);
     }
 }
