@@ -53,36 +53,53 @@ public class SpringCodeCompetition {
 
 
     public int[] getTriggerTime(int[][] increase, int[][] requirements) {
-        int length = requirements.length;
-        List<Integer> records = new ArrayList<>();
-        int[] triggerTime = new int[length];
-        for (int i=0; i<length; i++) triggerTime[i] = -1;
-
-        for (int i=0; i<length; i++){
-            if (requirements[i][0]==0 && requirements[i][1]==0 && requirements[i][2]==0){
-                records.add(i);
-                triggerTime[i] = 0;
-            }
+        int[] result = new int[requirements.length];
+        for (int i=0; i<requirements.length;i++) result[i]=-1;
+        for (int i=1; i<increase.length;i++){
+            increase[i][0] += increase[i-1][0];
+            increase[i][1] += increase[i-1][1];
+            increase[i][2] += increase[i-1][2];
         }
-
-        int sumA = 0;
-        int sumB = 0;
-        int sumC = 0;
-        int days = 0;
-        for (int k=0; k<increase.length; k++){
-            sumA += increase[k][0];
-            sumB += increase[k][1];
-            sumC += increase[k][2];
-            days++;
-            for (int i=0; i<length; i++){
-                if (records.contains(i)) continue;
-                if (sumA >= requirements[i][0] && sumB >= requirements[i][1] && sumC >= requirements[i][2]){
-                    triggerTime[i] = days;
-                    records.add(i);
+        for (int i=0; i<requirements.length; i++){
+            int left = 0, right = increase.length - 1, mid = 0;
+            while (left < right){
+                mid = (left + right) >> 1;
+                if (isTrue(increase[mid],requirements[i])){
+                    right = mid;
+                }else{
+                    left = mid + 1;
                 }
             }
+            if (isTrue(increase[left],requirements[i])){
+                if(requirements[i][0] + requirements[i][1] + requirements[i][2] == 0) result[i] =  0;
+                else result[i] = left + 1;
+            }
         }
-        return triggerTime;
+        return result;
+    }
+    private boolean isTrue(int[] increase, int[] requirement){
+        return requirement[0] <= increase[0] && requirement[1] <= increase[1] && requirement[2] <= increase[2];
+    }
+
+
+    /**
+     * 非常经典的动态规划题目
+     * @param jump
+     * @return
+     */
+    public int minJump(int[] jump) {
+        int[] dp = new int[jump.length];
+        for (int i=jump.length-1; i>=0; i--){
+            if (i + jump[i] >= jump.length){
+                dp[i] = 1;
+            }else {
+                dp[i] = dp[i + jump[i]] + 1;
+            }
+            for (int j=i+1; j<jump.length&&j<i+jump[i]&&dp[j]>dp[i]; j++){
+                dp[j] = Integer.min(dp[j],dp[i]+1);
+            }
+        }
+        return dp[0];
     }
 
 
