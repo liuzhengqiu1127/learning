@@ -1,10 +1,9 @@
 package com.lzq.study.lettcode;
 
-import com.lzq.study.geektime.algorithms.hash.Hash;
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SpringCodeCompetition {
 
