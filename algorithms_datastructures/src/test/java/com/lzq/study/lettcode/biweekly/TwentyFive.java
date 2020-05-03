@@ -110,5 +110,37 @@ public class TwentyFive {
     }
 
     @Test
-    public void test04(){}
+    public void test04(){
+        List<List<Integer>> hats = new ArrayList<>();
+        hats.add(Arrays.asList(1,2,3));
+        hats.add(Arrays.asList(2,3,5,6));
+        hats.add(Arrays.asList(1,3,7,9));
+        hats.add(Arrays.asList(1,8,9));
+        hats.add(Arrays.asList(2,5,7));
+        System.out.println(numberWays(hats));
+    }
+
+    public int numberWays(List<List<Integer>> hats) {
+        int[] peoples = new int[40];
+        int p = 1;
+        for (List<Integer> hat : hats){
+            for (int h : hat){
+                peoples[h-1] |= p;
+            }
+            p <<= 1;
+        }
+        int[] dp = new int[p];
+        dp[0] = 1;
+        for (int people : peoples){
+            if (people == 0) continue;
+            for (int status = p; status > 0; status--){
+                for (int mask = people & status, pp; mask > 0; mask ^= pp){
+                    pp = (-mask) & mask;
+                    dp[status] = (dp[status ^ pp] + dp[status]) % 1000000007;
+                }
+            }
+        }
+
+        return dp[p-1];
+    }
 }
