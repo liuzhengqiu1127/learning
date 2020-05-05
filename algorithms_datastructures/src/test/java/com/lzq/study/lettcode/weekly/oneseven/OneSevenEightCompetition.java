@@ -1,4 +1,4 @@
-package com.lzq.study.lettcode.oneseven;
+package com.lzq.study.lettcode.weekly.oneseven;
 
 import com.lzq.study.lettcode.common.ListNode;
 import com.lzq.study.lettcode.weekly.process.TreeNode;
