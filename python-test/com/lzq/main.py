@@ -1,3 +1,5 @@
+from functools import reduce
+
 
 def main():
     list = [1, 2, 3, 4, 5]
@@ -41,8 +43,18 @@ def nth_power(exponent):
         return base ** exponent
     return exponent_of
 
+def test02():
+    l = [1, 2, 3, 4, 5]
+    new_list1 = map(lambda x: x * 2, l)
+    for value in new_list1:
+        print(value)
+    # print(new_list1)
+    new_list2 = filter(lambda x: x % 2 == 0, l)
+    print(new_list2)
+    product = reduce(lambda x, y: x*y, l)
+    print(product)
+
 if __name__ == '__main__':
-    square = nth_power(2)
-    cube = nth_power(3)
-    print(square(2))
-    print(cube(2))
+    d = {'mike': 10, 'lucy': 2, 'ben': 30}
+    v = sorted(d.items(), key=lambda x: x[1], reverse=True)
+    print(v)
