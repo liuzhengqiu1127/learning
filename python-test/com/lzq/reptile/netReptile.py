@@ -12,9 +12,9 @@ def main():
 
     response = requests.get(url, headers=fake_headers)
     # 保存网页到本地
-    file_obj = open('douban.html', 'w')
-    file_obj.write(response.content.decode('utf-8'))
-    file_obj.close()
+    # file_obj = open('douban.html', 'w')
+    # file_obj.write(response.content.decode('utf-8'))
+    # file_obj.close()
 
     init_soup = BeautifulSoup(response.content.decode('utf-8'), 'lxml')
 
@@ -30,6 +30,12 @@ def main():
         movie_area = all_li_tag[2].text
         movie_lovers = all_li_tag[3].text
         print('名字：{}，链接：{}，日期：{}，类型：{}，地区：{}， 关注者：{}'.format(movie_name, movie_href, movie_date, movie_type, movie_area, movie_lovers))
+
+        response_item = requests.get(movie_href, headers=fake_headers)
+
+        soup_item = BeautifulSoup(response_item.content.decode('utf-8'), 'lxml')
+        img_tag = soup_item.find('img')
+        print('img = {}'.format(img_tag['src']))
 
 
 if __name__ == '__main__':
