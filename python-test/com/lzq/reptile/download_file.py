@@ -1,9 +1,12 @@
 import asyncio
 import concurrent.futures
+import os
 import time
 
 import aiohttp
+import psutil
 import requests
+import objgraph
 
 
 fake_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36'}
@@ -47,6 +50,23 @@ def main():
     end_time = time.perf_counter()
     print('Download {} sites in {} seconds'.format(len(sites), end_time-start_time))
 
+def show_memory_info(hint):
+    pid = os.getpid()
+    p = psutil.Process(pid)
+
+    info = p.memory_full_info()
+    memory = info.uss / 1024. / 1024
+    print('{} memory used: {} MB'.format(hint, memory))
+
+def func():
+    show_memory_info('initial')
+    a = [i for i in range(10000000)]
+    show_memory_info('after a created')
+
 
 if __name__ == '__main__':
-    main()
+    a = [1, 2, 3]
+    b = [4, 5, 6]
+    a.append(b)
+    b.append(a)
+    objgraph.show_refs([a])
