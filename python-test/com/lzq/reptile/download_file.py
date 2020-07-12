@@ -8,8 +8,8 @@ import psutil
 import requests
 import objgraph
 
-
-fake_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36'}
+fake_headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36'}
 
 
 def download_one(url):
@@ -48,7 +48,8 @@ def main():
     # download_all(sites)
     asyncio.run(download_all2(sites))
     end_time = time.perf_counter()
-    print('Download {} sites in {} seconds'.format(len(sites), end_time-start_time))
+    print('Download {} sites in {} seconds'.format(len(sites), end_time - start_time))
+
 
 def show_memory_info(hint):
     pid = os.getpid()
@@ -58,9 +59,9 @@ def show_memory_info(hint):
     memory = info.uss / 1024. / 1024
     print('{} memory used: {} MB'.format(hint, memory))
 
+
 def func():
     show_memory_info('initial')
-    a = [i for i in range(10000000)]
     show_memory_info('after a created')
 
 
