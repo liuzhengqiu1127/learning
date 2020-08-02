@@ -3,9 +3,6 @@ package com.lzq.study.lettcode.weekly.onenine;
 import com.lzq.study.lettcode.weekly.process.TreeNode;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class OneNineNine {
 
     public String restoreString(String s, int[] indices) {
