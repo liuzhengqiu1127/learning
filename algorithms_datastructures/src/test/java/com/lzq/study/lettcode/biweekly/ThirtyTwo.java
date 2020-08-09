@@ -91,16 +91,63 @@ public class ThirtyTwo {
         return result + Math.abs(record);
     }
 
+    public int longestAwesome(String s){
+        if (s.length() <= 1) return s.length();
+        Map<Integer,Integer> umap = new HashMap<>();
+        umap.put(0,-1);
+        int state = 0;
+        int ans = 1;
+        for (int i = 0; i<s.length(); i++){
+            /**
+             * 0： 1
+             * 1： 10
+             * 2： 100
+             * 3： 1000
+             * 统计前缀每个字符异或求值，可以分为三种情况
+             * 如果是回文分为如下两种情况：
+             * 1，state == 0, 表示已经为回文
+             * 2，state == (1,10,100,1000,...,1000000000)任一一个，表示只有一个奇数，也是回文
+             * 如果不是回文：
+             * 1和2都不满足，这个时候就把这个state和下标进行记录
+             */
+            int mask = 1 << (s.charAt(i) - '0');
+            state ^= mask;
+
+            /**
+             * 解决场景问题：
+             *  123321
+             *  562323
+             */
+            if (umap.containsKey(state)){
+                ans = Math.max(i-umap.get(state), ans);
+            }
+
+            /**
+             * 解决场景问题：
+             * 12321
+             * 5612321
+             */
+            mask = 1;
+            int cnt = 10;
+            while (cnt-- > 0){
+                int key = state ^ mask;
+                if (umap.containsKey(key)){
+                    ans = Math.max(i-umap.get(key),ans);
+                }
+                mask<<=1;
+            }
+
+            if (!umap.containsKey(state)){
+                umap.put(state,i);
+            }
+        }
+        return ans;
+    }
+
 
     @Test
     public void test(){
-        Assert.assertTrue(minInsertions("(()))")==1);
-        Assert.assertTrue(minInsertions("())")==0);
-        Assert.assertTrue(minInsertions("))())(")==3);
-        Assert.assertTrue(minInsertions("((((((")==12);
-        Assert.assertTrue(minInsertions(")))))))")==5);
-        Assert.assertTrue(minInsertions("(()))(()))()())))")==4);
-        Assert.assertTrue(minInsertions("))(()()))()))))))()())()(())()))))()())(()())))()(")==16);
+        System.out.println(longestAwesome("12332"));
     }
 
 }
