@@ -1,6 +1,7 @@
 package com.lzq.spring.cloud.user.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -23,7 +24,6 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@Builder
 @NoArgsConstructor
 public class UserRoleRelation extends Model<UserRoleRelation> {
 
@@ -38,12 +38,15 @@ public class UserRoleRelation extends Model<UserRoleRelation> {
     @TableField("ROLE_ID")
     private Long roleId;
 
+    public UserRoleRelation(Long userId, Long roleId){
+        this.userId = userId;
+        this.roleId = roleId;
+    }
 
-    public static final String ID = "ID";
+    public UserRoleRelation(Long userId){
+        this.userId = userId;
+    }
 
-    public static final String USER_ID = "USER_ID";
-
-    public static final String ROLE_ID = "ROLE_ID";
 
     @Override
     protected Serializable pkVal() {

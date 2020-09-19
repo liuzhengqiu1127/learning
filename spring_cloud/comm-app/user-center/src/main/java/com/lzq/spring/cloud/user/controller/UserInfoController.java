@@ -51,7 +51,7 @@ public class UserInfoController {
         List<Long> roleIds = roleInfoList.stream().map(roleInfo -> roleInfo.getRoleId()).collect(Collectors.toList());
         List<UserRoleRelation> userRoleRelations = new ArrayList<>();
         for (Long roleId : roleIds){
-            userRoleRelations.add(UserRoleRelation.builder().roleId(roleId).userId(userId).build());
+            userRoleRelations.add(new UserRoleRelation(userId,roleId));
         }
         userRoleRelationService.saveBatch(userRoleRelations);
     }
@@ -78,7 +78,7 @@ public class UserInfoController {
     public UserExtInfo detail(@RequestParam(value = "userId")Long userId){
         UserExtInfo userExtInfo = (UserExtInfo) userInfoService.getById(userId);
         List<UserRoleRelation> userRoleRelationList =
-                userRoleRelationService.list(new QueryWrapper<>(UserRoleRelation.builder().userId(userId).build()));
+                userRoleRelationService.list(new QueryWrapper<>(new UserRoleRelation(userId)));
         List<Long> roleIds = userRoleRelationList.stream().map(userRoleRelation -> userRoleRelation.getRoleId()).collect(Collectors.toList());
         Collection<RoleInfo> roleInfoCollection = roleInfoService.listByIds(roleIds);
         List<String> roleNames = roleInfoCollection.stream().map(roleInfo -> roleInfo.getRoleName()).collect(Collectors.toList());
