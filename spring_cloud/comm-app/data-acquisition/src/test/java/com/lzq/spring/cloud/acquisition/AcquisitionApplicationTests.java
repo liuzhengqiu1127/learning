@@ -1,10 +1,10 @@
-package com.lzq.spring.cloud.springbatch;
+package com.lzq.spring.cloud.acquisition;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringBatchApplicationTests {
+class AcquisitionApplicationTests {
 
 	@Test
 	void contextLoads() {
