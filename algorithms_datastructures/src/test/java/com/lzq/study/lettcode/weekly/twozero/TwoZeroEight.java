@@ -2,9 +2,7 @@ package com.lzq.study.lettcode.weekly.twozero;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class TwoZeroEight {
 
@@ -65,6 +63,38 @@ public class TwoZeroEight {
     public void test(){
         int[] customers = {24,0,32,1,39,33,36,40,22,40,5,43,31,27,4,0,11,17,5,10,11,19,35,50,20,18,49,4,46,8,50,0,4,19,12,19,37,10,0,27,45,1,23,46,48,26,12,34,19,25,49,1,36,14,43,31,7,14,46,0,1,23,40};
         System.out.println(minOperationsMaxProfit(customers,22,53));
+    }
+
+    String kingName;
+    Map<String, List<String>> mp = new HashMap();
+    Set <String> set = new HashSet();
+    public void ThroneInheritance(String kingName) {
+        this.kingName = kingName;
+        mp.put(kingName, new LinkedList());
+    }
+
+    public void birth(String parentName, String childName) {
+        mp.get(parentName).add(childName);
+        mp.put(childName, new LinkedList());
+    }
+
+    public void death(String name) {
+        set.add(name);
+    }
+
+    public List<String> getInheritanceOrder() {
+        List<String> res = new LinkedList();
+        dfs(res, kingName);
+        return res;
+    }
+
+    public void dfs(List<String> res, String name) {
+        if(!set.contains(name)) {
+            res.add(name);
+        }
+        for(String subName : mp.get(name)) {
+            dfs(res, subName);
+        }
     }
 
 }
