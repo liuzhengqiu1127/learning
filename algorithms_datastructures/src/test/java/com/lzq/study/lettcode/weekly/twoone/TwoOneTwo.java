@@ -51,11 +51,49 @@ public class TwoOneTwo {
         return result;
     }
 
+    /**
+     * 竟然使用的是2分法不停逼近的思路
+     * @param heights
+     * @return
+     */
     public int minimumEffortPath(int[][] heights) {
-        int result = 0;
-        int startRow = 0, startColumn = 0;
-        int endRow = heights.length, endColumn = heights[0].length;
+        this.n = heights.length;
+        this.m = heights[0].length;
+        int l = 0, r = 1000000;
+        while (l < r){
+            int mid = (l + r) >> 1;
+            if (check(mid, heights)) r = mid;
+            else l = mid + 1;
+        }
+        return l;
+    }
+    private int[][] d = new int[110][110];
+    int[] dx = {0,0,1,-1}, dy = {1,-1,0,0};
+    private int n, m;
+    private boolean check(int mid, int[][] heights){
+        for (int i = 0; i < 110; i++){
+            for (int j = 0; j < 110; j++){
+                d[i][j] = -1;
+            }
+        }
+        d[0][0] = 1;
 
-        return result;
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{0,0});
+        while (!q.isEmpty()){
+            int[] t = q.poll();
+            if (t[0] == n-1 && t[1] == m-1) return true;
+            for (int i = 0; i < 4; i++){
+                int x = t[0] + dx[i], y = t[1] + dy[i];
+                if (x < 0 || x >= n || y < 0 || y >= m) continue;
+                if (d[x][y] != -1) continue;
+                if (Math.abs(heights[x][y] - heights[t[0]][t[1]]) <= mid){
+                    d[x][y] = 1;
+                    q.add(new int[]{x,y});
+                }
+            }
+        }
+
+        return false;
     }
 }
