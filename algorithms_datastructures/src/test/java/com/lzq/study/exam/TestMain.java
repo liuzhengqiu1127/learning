@@ -1,12 +1,13 @@
 package com.lzq.study.exam;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TestMain {
 
     @Test
     public void test01(){
-        System.out.println(getMaxOneCount(new int[]{1,0,0,1,0,1},2));
+        Assert.assertTrue(longestOnes(new int[]{0,0,0,0,0,0},3) == getMaxOneCount(new int[]{0,0,0,0,0,0},3));
     }
 
     /**
@@ -55,7 +56,7 @@ public class TestMain {
                     K--;
                 }
             }
-            max = right - left + 1 > max ? right-left+1 : max;
+            max = Integer.max(right - left + 1,max);
         }
         return max;
     }
