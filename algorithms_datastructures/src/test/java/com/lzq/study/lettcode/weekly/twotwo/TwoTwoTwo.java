@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by liuzhengqiu on 2021/1/3.
@@ -35,44 +37,37 @@ public class TwoTwoTwo {
         Assert.assertTrue(maximumUnits(new int[][]{{5,10},{2,5},{4,7},{3,9}},10)==91);
     }
 
+    /**
+     * 关键点使用
+     * @param deliciousness
+     * @return
+     */
     public int countPairs(int[] deliciousness) {
-        int result = 0;
-        int res = 1000000007;
-        double[] tmp = new double[21];
-        for (int i=0; i<=20; i++){
-            tmp[i] = Math.pow(2,i);
+        long answer = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int length = deliciousness.length;
+        for (int i = 0; i < length; i++) {
+            Integer orDefault = map.getOrDefault(deliciousness[i], 0);
+            // 统计数据
+            map.put(deliciousness[i], ++orDefault);
         }
-        Arrays.sort(deliciousness);
-        for (int i = 0; i < deliciousness.length; i++){
-            for (int j=0;j<=20;j++){
-                result += getNumberCount(deliciousness,i+1,tmp[j]-deliciousness[i]);
-                result %= res;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            Integer key = entry.getKey();
+            Integer value = entry.getValue();
+            for (int i = 0; i <= 21; i++) {
+                int sum = 1 << i;
+                long l = sum - key;
+                if (key == l) {//如果是自己，则是从个数中组合2个数据，因为后续要除2，所以计算组合的时候不除
+                    answer += 1l * value * (value - 1);
+                } else {
+                    if (l >= 0 && map.containsKey((int) l)) {
+                        answer += 1l * value * map.get((int) l);
+                    }
+                }
             }
         }
-        return result;
-    }
-    private int getNumberCount(int[] deliciousness,int start,double number){
-        int left = start;
-        int right = deliciousness.length-1;
-        int count = 0;
-        while (left <= right){
-            int mid = (left+right)>>1;
-            if (deliciousness[mid] < number) left = mid+1;
-            else if (deliciousness[mid] > number) right = mid - 1;
-            else {
-                count++;
-                for (int index=mid+1;index<deliciousness.length;index++){
-                    if (deliciousness[index]==number) count++;
-                    else break;
-                }
-                for (int index=mid-1;index>=start;index--){
-                    if (deliciousness[index]==number) count++;
-                    else break;
-                }
-                break;
-            }
-        }
-        return count;
+        //结果都算了2遍
+        return (int) (answer / 2 % 1000000007);
     }
 
     @Test
