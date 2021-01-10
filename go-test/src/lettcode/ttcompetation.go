@@ -26,44 +26,44 @@ func swapNodes(head *ListNode, k int) *ListNode {
 	if k == k2 {
 		return head
 	}
-	tmp2 := head
+	tmp = head
 	var number1 = 0
 	var number2 = 0
 	var i = 1
 	var count = 0
-	for tmp2 != nil {
+	for tmp != nil {
 		if i == k {
-			number1 = tmp2.Val
+			number1 = tmp.Val
 			count++
 		}
 		if i == k2 {
-			number2 = tmp2.Val
+			number2 = tmp.Val
 			count++
 		}
 		if count == 2{
 			break
 		}
 		i++
-		tmp2 = tmp2.Next
+		tmp = tmp.Next
 	}
 
-	tmp3 := head
+	tmp = head
 	i = 1
 	count = 0
-	for tmp3 != nil {
+	for tmp != nil {
 		if i == k {
-			tmp3.Val = number2
+			tmp.Val = number2
 			count++
 		}
 		if i == k2 {
-			tmp3.Val = number1
+			tmp.Val = number1
 			count++
 		}
 		if count == 2{
 			break
 		}
 		i++
-		tmp3 = tmp3.Next
+		tmp = tmp.Next
 	}
 	return head
 }
