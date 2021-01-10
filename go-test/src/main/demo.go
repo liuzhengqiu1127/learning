@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"container/list"
+	"fmt"
+)
 
 var container = []string{"zero","one","two"}
 
@@ -30,6 +33,19 @@ func test02()  {
 	fmt.Printf("The value of s4:%d\n",s4)
 }
 
+func test03()  {
+	var l list.List
+	e1 := l.PushBack(4)
+	e4 := l.PushFront(1)
+	l.InsertBefore(3,e1)
+	l.InsertAfter(2,e4)
+	for i := l.Front(); i != nil; i = i.Next(){
+		fmt.Println(i.Value)
+	}
+}
+
 func main() {
-	test02()
+	//test01()
+	//test02()
+	test03()
 }
