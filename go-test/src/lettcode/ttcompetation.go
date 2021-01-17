@@ -125,13 +125,38 @@ func tupleSameProduct(nums []int) int {
 	return result
 }
 
+/**
+如何从数组中选择相同的，
+1，先获取所有可能的乘积
+2，相同个数的组合=(number)*(number-1)/2
+3，结果=8*组合
+ */
+func tupleSameProduct2(nums []int) int {
+	var result = 0
+	sort.Ints(nums)
+	var mp = map[int]int{}
+	for i:=0; i<len(nums); i++ {
+		for j:=i+1; j<len(nums); j++ {
+			mp[nums[i]*nums[j]]++
+		}
+	}
+	for _, v:= range mp{
+		result += v*(v-1)/2
+	}
+	return result*8
+}
+
 func main() {
 	fmt.Printf("the result : %d\n",decode([]int{1,2,3},1))
 	fmt.Printf("the result : %d\n",decode([]int{6,2,7,3},4))
 	fmt.Printf("countGoodRectangles result : %d\n",countGoodRectangles([][]int{{5,8},{3,9},{5,12},{16,5}}))
 	fmt.Printf("countGoodRectangles result : %d\n",countGoodRectangles([][]int{{2,3},{3,7},{4,3},{3,7}}))
 	fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{2,3,4,6}))
+	fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{2,3,4,6}))
 	fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{1,2,4,5,10}))
+	fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{1,2,4,5,10}))
 	fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{2,3,4,6,8,12}))
+	fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{2,3,4,6,8,12}))
 	fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{2,3,5,7}))
+	fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{2,3,5,7}))
 }
