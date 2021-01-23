@@ -146,17 +146,68 @@ func tupleSameProduct2(nums []int) int {
 	return result*8
 }
 
+func largestAltitude(gain []int) int {
+	var result = 0
+	var temp = 0
+	for i:=0; i<len(gain); i++ {
+		temp = temp + gain[i]
+		if temp > result {
+			result = temp
+		}
+	}
+	return result
+}
+
+func minimumTeachings(n int, languages [][]int, friendships [][]int) int {
+	var tmpList []int
+	for i:=0; i<len(friendships); i++ {
+		flag := false
+		for j:=0; j<len(languages[friendships[i][0]-1]); j++ {
+			for k:=0; k<len(languages[friendships[i][1]-1]); k++ {
+				if languages[friendships[i][0]-1][j] == languages[friendships[i][1]-1][k]{
+					flag = true
+					break
+				}
+			}
+			if flag {
+				break
+			}
+		}
+		if !flag {
+			tmpList = append(tmpList, friendships[i][0]-1, friendships[i][1]-1)
+		}
+	}
+	tmpList = removeRepByMap(tmpList)//算出所有不能沟通的人
+	s := make([]int, n+1)
+	for _,v1 := range tmpList {
+		for i:=0; i<len(languages[v1]); i++ {
+			s[languages[v1][i]]++ //找到不能沟通人之间共同语言最多的
+		}
+	}
+	sort.Ints(s)
+	return len(tmpList) - s[len(s)-1]
+}
+func removeRepByMap(slc []int) []int {
+	var result []int
+	tempMap := map[int]byte{}
+	for _, e := range slc {
+		l := len(tempMap)
+		tempMap[e] = 0
+		if len(tempMap) != l {
+			result = append(result, e)
+		}
+	}
+	return result
+}
+
 func main() {
-	fmt.Printf("the result : %d\n",decode([]int{1,2,3},1))
-	fmt.Printf("the result : %d\n",decode([]int{6,2,7,3},4))
-	fmt.Printf("countGoodRectangles result : %d\n",countGoodRectangles([][]int{{5,8},{3,9},{5,12},{16,5}}))
-	fmt.Printf("countGoodRectangles result : %d\n",countGoodRectangles([][]int{{2,3},{3,7},{4,3},{3,7}}))
-	fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{2,3,4,6}))
-	fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{2,3,4,6}))
-	fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{1,2,4,5,10}))
-	fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{1,2,4,5,10}))
-	fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{2,3,4,6,8,12}))
-	fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{2,3,4,6,8,12}))
-	fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{2,3,5,7}))
-	fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{2,3,5,7}))
+	//fmt.Printf("the result : %d\n",decode([]int{1,2,3},1))
+	//fmt.Printf("the result : %d\n",decode([]int{6,2,7,3},4))
+	//fmt.Printf("countGoodRectangles result : %d\n",countGoodRectangles([][]int{{5,8},{3,9},{5,12},{16,5}}))
+	//fmt.Printf("countGoodRectangles result : %d\n",countGoodRectangles([][]int{{2,3},{3,7},{4,3},{3,7}}))
+	//fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{2,3,4,6}))
+	//fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{2,3,4,6}))
+	fmt.Printf("largestAltitude result: %d\n",largestAltitude([]int{-5,1,5,0,-7}))
+	fmt.Printf("largestAltitude result: %d\n",largestAltitude([]int{-4,-3,-2,-1,4,3,2}))
+	fmt.Printf("minimumTeachings result: %d\n",minimumTeachings(3,[][]int{{2},{1,3},{1,2},{3}},[][]int{{1,4},{1,2},{3,4},{2,3}}))
 }
