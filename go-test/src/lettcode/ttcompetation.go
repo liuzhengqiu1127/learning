@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strconv"
 )
 
 /**
@@ -200,14 +201,88 @@ func removeRepByMap(slc []int) []int {
 	return result
 }
 
+func countBalls(lowLimit int, highLimit int) int {
+	var temp = make(map[int]int)
+	for i:=lowLimit; i<=highLimit;  i++{
+		str := strconv.Itoa(i)
+		number := 0
+		for j:=0; j<len(str); j++ {
+			b,_ := strconv.Atoi(str[j:j+1])
+			number += b
+		}
+		temp[number]++
+	}
+	var result = 0
+	for _, v:= range temp {
+		if v > result {
+			result = v
+		}
+	}
+	return result
+}
+
+func restoreArray(adjacentPairs [][]int) []int {
+	var cm = make(map[int][2]int)
+	for i:=0; i<len(adjacentPairs); i++ {
+		v,ok := cm[adjacentPairs[i][0]]
+		if ok {
+			v[1] = i
+		}else {
+			cm[adjacentPairs[i][0]] = [2]int{i,100001}
+		}
+
+		v1,ok :=cm[adjacentPairs[i][1]]
+		if ok {
+			v1[1] = i
+		}else {
+			cm[adjacentPairs[i][1]] = [2]int{i,100001}
+		}
+	}
+
+	var res = make([]int,len(adjacentPairs)+1)
+	for index,v:= range cm {
+		if v[0]==100001 || v[1] == 100001 {
+			res[0] = index
+			break
+		}
+	}
+
+	var used = make([]bool, len(adjacentPairs))
+	for i:=0; i<len(adjacentPairs);  {
+		a:=cm[res[i]]
+		if a[0]!=100001&&!used[a[0]] {
+			if adjacentPairs[a[0]][0]!=res[i] {
+				i++
+				res[i] = adjacentPairs[a[0]][0]
+			}else{
+				i++
+				res[i] = adjacentPairs[a[0]][1]
+			}
+			used[a[0]] = true
+		}else{
+			if adjacentPairs[a[1]][0]!=res[i] {
+				i++
+				res[i] = adjacentPairs[a[1]][0]
+			}else {
+				i++
+				res[i] = adjacentPairs[a[1]][1]
+			}
+			used[a[1]] = true
+		}
+	}
+	return res
+}
+
 func main() {
+	fmt.Printf("the restoreArray result : %d\n",restoreArray([][]int{{2,1},{3,4},{3,2}}))
+	//fmt.Printf("the countBalls result : %d\n",countBalls(19,28))
 	//fmt.Printf("the result : %d\n",decode([]int{1,2,3},1))
 	//fmt.Printf("the result : %d\n",decode([]int{6,2,7,3},4))
 	//fmt.Printf("countGoodRectangles result : %d\n",countGoodRectangles([][]int{{5,8},{3,9},{5,12},{16,5}}))
 	//fmt.Printf("countGoodRectangles result : %d\n",countGoodRectangles([][]int{{2,3},{3,7},{4,3},{3,7}}))
 	//fmt.Printf("tupleSameProduct result : %d\n",tupleSameProduct([]int{2,3,4,6}))
 	//fmt.Printf("tupleSameProduct2 result : %d\n",tupleSameProduct2([]int{2,3,4,6}))
-	fmt.Printf("largestAltitude result: %d\n",largestAltitude([]int{-5,1,5,0,-7}))
-	fmt.Printf("largestAltitude result: %d\n",largestAltitude([]int{-4,-3,-2,-1,4,3,2}))
-	fmt.Printf("minimumTeachings result: %d\n",minimumTeachings(3,[][]int{{2},{1,3},{1,2},{3}},[][]int{{1,4},{1,2},{3,4},{2,3}}))
+	//fmt.Printf("largestAltitude result: %d\n",largestAltitude([]int{-5,1,5,0,-7}))
+	//fmt.Printf("largestAltitude result: %d\n",largestAltitude([]int{-4,-3,-2,-1,4,3,2}))
+	//fmt.Printf("minimumTeachings result: %d\n",minimumTeachings(3,[][]int{{2},{1,3},{1,2},{3}},[][]int{{1,4},{1,2},{3,4},{2,3}}))
 }
