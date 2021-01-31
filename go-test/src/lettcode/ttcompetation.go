@@ -221,60 +221,73 @@ func countBalls(lowLimit int, highLimit int) int {
 	return result
 }
 
+/**
+从相邻元素对还原数组
+ */
 func restoreArray(adjacentPairs [][]int) []int {
-	var cm = make(map[int][2]int)
+	var cm = make(map[int][]int) //记录每个数字的下标，如果是起始节点说明下标中肯定有100001
 	for i:=0; i<len(adjacentPairs); i++ {
 		v,ok := cm[adjacentPairs[i][0]]
 		if ok {
 			v[1] = i
 		}else {
-			cm[adjacentPairs[i][0]] = [2]int{i,100001}
+			cm[adjacentPairs[i][0]] = []int{i,100001}
 		}
 
 		v1,ok :=cm[adjacentPairs[i][1]]
 		if ok {
 			v1[1] = i
 		}else {
-			cm[adjacentPairs[i][1]] = [2]int{i,100001}
+			cm[adjacentPairs[i][1]] = []int{i,100001}
 		}
 	}
 
-	var res = make([]int,len(adjacentPairs)+1)
-	for index,v:= range cm {
-		if v[0]==100001 || v[1] == 100001 {
-			res[0] = index
+	var res = make([]int,len(adjacentPairs)+1) //定义返回结果长度
+	for k,v:= range cm {
+		if v[1] == 100001 {
+			res[0] = k //定义开始位置
 			break
 		}
 	}
 
-	var used = make([]bool, len(adjacentPairs))
+	var used = make([]bool, len(adjacentPairs)) //标记下标是否已使用
+
+	/**
+	找到开始位置
+	1，先判断map中哪个下标没有被使用
+	2，获取未使用下标，再来判断匹配对中，哪个数据和目标数值一样
+	3，不同的那一个数组，就是res的下一个数据
+	 */
 	for i:=0; i<len(adjacentPairs);  {
 		a:=cm[res[i]]
-		if a[0]!=100001&&!used[a[0]] {
-			if adjacentPairs[a[0]][0]!=res[i] {
-				i++
-				res[i] = adjacentPairs[a[0]][0]
-			}else{
+
+		if !used[a[0]]{
+			if adjacentPairs[a[0]][0] == res[i] {
 				i++
 				res[i] = adjacentPairs[a[0]][1]
+			}else{
+				i++
+				res[i] = adjacentPairs[a[0]][0]
 			}
 			used[a[0]] = true
-		}else{
-			if adjacentPairs[a[1]][0]!=res[i] {
-				i++
-				res[i] = adjacentPairs[a[1]][0]
-			}else {
+		} else {
+			if adjacentPairs[a[1]][0] == res[i] {
 				i++
 				res[i] = adjacentPairs[a[1]][1]
+			}else{
+				i++
+				res[i] = adjacentPairs[a[1]][0]
 			}
 			used[a[1]] = true
 		}
 	}
+
 	return res
 }
 
 func main() {
 	fmt.Printf("the restoreArray result : %d\n",restoreArray([][]int{{2,1},{3,4},{3,2}}))
+	fmt.Printf("the restoreArray result : %d\n",restoreArray([][]int{{4,-2},{1,4},{-3,1}}))
 	//fmt.Printf("the countBalls result : %d\n",countBalls(19,28))
 	//fmt.Printf("the result : %d\n",decode([]int{1,2,3},1))
 	//fmt.Printf("the result : %d\n",decode([]int{6,2,7,3},4))
