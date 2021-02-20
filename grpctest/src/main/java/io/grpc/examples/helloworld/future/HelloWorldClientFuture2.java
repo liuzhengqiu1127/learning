@@ -31,16 +31,13 @@
 
 package io.grpc.examples.helloworld.future;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.examples.helloworld.GreeterGrpc;
-import io.grpc.examples.helloworld.HelloReply;
-import io.grpc.examples.helloworld.HelloRequest;
 import io.grpc.examples.helloworld.HelloWorldServer;
+import io.grpc.examples.helloworld.Helloworld.HelloReply;
+import io.grpc.examples.helloworld.Helloworld.HelloRequest;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -57,8 +54,7 @@ public class HelloWorldClientFuture2 {
 
   /** Construct client connecting to HelloWorld server at {@code host:port}. */
   public HelloWorldClientFuture2(String host, int port) {
-    this(ManagedChannelBuilder.forAddress(host, port)
-        .usePlaintext(true));
+    this(ManagedChannelBuilder.forAddress(host, port).usePlaintext());
   }
   /** Construct client for accessing RouteGuide server using the existing channel. */
   HelloWorldClientFuture2(ManagedChannelBuilder<?> channelBuilder) {

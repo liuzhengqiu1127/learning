@@ -30,12 +30,14 @@
  */
 
 package io.grpc.examples.helloworld.async;
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.examples.helloworld.GreeterGrpc;
-import io.grpc.examples.helloworld.HelloReply;
-import io.grpc.examples.helloworld.HelloRequest;
+import io.grpc.examples.helloworld.Helloworld.HelloReply;
+import io.grpc.examples.helloworld.Helloworld.HelloRequest;
 import io.grpc.examples.helloworld.HelloWorldServer;
+
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -43,60 +45,66 @@ import java.util.logging.Logger;
  * A simple client that requests a greeting from the {@link HelloWorldServer}.
  */
 public class AsyncHelloWorldClient {
-  private static final Logger logger = Logger.getLogger(AsyncHelloWorldClient.class.getName());
+    private static final Logger logger = Logger.getLogger(AsyncHelloWorldClient.class.getName());
 
-  private final ManagedChannel channel;
-  private final GreeterGrpc.GreeterStub stub;
+    private final ManagedChannel channel;
+    private final GreeterGrpc.GreeterStub stub;
 
-  /** Construct client connecting to HelloWorld server at {@code host:port}. */
-  public AsyncHelloWorldClient(String host, int port) {
-    this(ManagedChannelBuilder.forAddress(host, port)
-        .usePlaintext(true));
-  }
-  /** Construct client for accessing RouteGuide server using the existing channel. */
-  AsyncHelloWorldClient(ManagedChannelBuilder<?> channelBuilder) {
-    channel = channelBuilder.build();
-    stub = GreeterGrpc.newStub(channel);
-  }
-
-  public void asyncGreet(String name) {
-    logger.info("Will try to greet " + name + " ...");
-    HelloRequest request = HelloRequest.newBuilder().setName(name).build();
-    io.grpc.stub.StreamObserver<HelloReply> responseObserver =
-            new io.grpc.stub.StreamObserver<HelloReply>()
-            {
-                public  void onNext(HelloReply value)
-               {
-                   logger.info("Greeting: " + value.getMessage());
-               }
-                public void onError(Throwable t){
-                    logger.warning(t.getMessage());
-                }
-                public void onCompleted(){}
-            };
-           stub.sayHello(request,responseObserver);
-  }
-
-  public void shutdown() throws InterruptedException {
-    channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-  }
-
-  /**
-   * Greet server. If provided, the first element of {@code args} is the name to use in the
-   * greeting.
-   */
-  public static void main(String[] args) throws Exception {
-    AsyncHelloWorldClient client = new AsyncHelloWorldClient("localhost", 50051);
-    try {
-      /* Access a service running on the local machine on port 50051 */
-      String user = "world";
-      if (args.length > 0) {
-        user = args[0]; /* Use the arg as the name to greet if provided */
-      }
-      client.asyncGreet(user);
-      TimeUnit.SECONDS.sleep(5);
-    } finally {
-      client.shutdown();
+    /**
+     * Construct client connecting to HelloWorld server at {@code host:port}.
+     */
+    public AsyncHelloWorldClient(String host, int port) {
+        this(ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext());
     }
-  }
+
+    /**
+     * Construct client for accessing RouteGuide server using the existing channel.
+     */
+    AsyncHelloWorldClient(ManagedChannelBuilder<?> channelBuilder) {
+        channel = channelBuilder.build();
+        stub = GreeterGrpc.newStub(channel);
+    }
+
+    public void asyncGreet(String name) {
+        logger.info("Will try to greet " + name + " ...");
+        HelloRequest request = HelloRequest.newBuilder().setName(name).build();
+        io.grpc.stub.StreamObserver<HelloReply> responseObserver =
+                new io.grpc.stub.StreamObserver<HelloReply>() {
+                    public void onNext(HelloReply value) {
+                        logger.info("Greeting: " + value.getMessage());
+                    }
+
+                    public void onError(Throwable t) {
+                        logger.warning(t.getMessage());
+                    }
+
+                    public void onCompleted() {
+                    }
+                };
+        stub.sayHello(request, responseObserver);
+    }
+
+    public void shutdown() throws InterruptedException {
+        channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Greet server. If provided, the first element of {@code args} is the name to use in the
+     * greeting.
+     */
+    public static void main(String[] args) throws Exception {
+        AsyncHelloWorldClient client = new AsyncHelloWorldClient("localhost", 50051);
+        try {
+            /* Access a service running on the local machine on port 50051 */
+            String user = "world";
+            if (args.length > 0) {
+                user = args[0]; /* Use the arg as the name to greet if provided */
+            }
+            client.asyncGreet(user);
+            TimeUnit.SECONDS.sleep(5);
+        } finally {
+            client.shutdown();
+        }
+    }
 }

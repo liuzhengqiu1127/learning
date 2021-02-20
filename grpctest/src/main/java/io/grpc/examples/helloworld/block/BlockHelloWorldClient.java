@@ -30,12 +30,14 @@
  */
 
 package io.grpc.examples.helloworld.block;
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.examples.helloworld.GreeterGrpc;
-import io.grpc.examples.helloworld.HelloReply;
-import io.grpc.examples.helloworld.HelloRequest;
+import io.grpc.examples.helloworld.Helloworld.HelloReply;
+import io.grpc.examples.helloworld.Helloworld.HelloRequest;
 import io.grpc.examples.helloworld.HelloWorldServer;
+
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,55 +46,59 @@ import java.util.logging.Logger;
  * A simple client that requests a greeting from the {@link HelloWorldServer}.
  */
 public class BlockHelloWorldClient {
-  private static final Logger logger = Logger.getLogger(BlockHelloWorldClient.class.getName());
+    private static final Logger logger = Logger.getLogger(BlockHelloWorldClient.class.getName());
 
-  private final ManagedChannel channel;
-  private final GreeterGrpc.GreeterBlockingStub blockingStub;
+    private final ManagedChannel channel;
+    private final GreeterGrpc.GreeterBlockingStub blockingStub;
 
-  /** Construct client connecting to HelloWorld server at {@code host:port}. */
-  public BlockHelloWorldClient(String host, int port) {
-    this(ManagedChannelBuilder.forAddress(host, port)
-        .usePlaintext(true));
-  }
-  /** Construct client for accessing RouteGuide server using the existing channel. */
-  public BlockHelloWorldClient(ManagedChannelBuilder<?> channelBuilder) {
-    channel = channelBuilder.build();
-    blockingStub = GreeterGrpc.newBlockingStub(channel);
-  }
-
-  public void blockingGreet(String name) {
-    logger.info("Will try to greet " + name + " ...");
-    HelloRequest request = HelloRequest.newBuilder().setName(name).build();
-    try {
-      HelloReply response = blockingStub
-              .sayHello(request);
-      logger.info("Greeting: " + response.getMessage());
-    } catch (Exception e) {
-      logger.log(Level.WARNING, "RPC failed: {0}", e);
-      return;
+    /**
+     * Construct client connecting to HelloWorld server at {@code host:port}.
+     */
+    public BlockHelloWorldClient(String host, int port) {
+        this(ManagedChannelBuilder.forAddress(host, port).usePlaintext());
     }
-  }
 
-  public void shutdown() throws InterruptedException {
-    channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-  }
-
-  /**
-   * Greet server. If provided, the first element of {@code args} is the name to use in the
-   * greeting.
-   */
-  public static void main(String[] args) throws Exception {
-    BlockHelloWorldClient client = new BlockHelloWorldClient("localhost", 50051);
-    try {
-      /* Access a service running on the local machine on port 50051 */
-      String user = "world";
-      if (args.length > 0) {
-        user = args[0]; /* Use the arg as the name to greet if provided */
-      }
-      client.blockingGreet(user);
-      TimeUnit.SECONDS.sleep(5);
-    } finally {
-      client.shutdown();
+    /**
+     * Construct client for accessing RouteGuide server using the existing channel.
+     */
+    public BlockHelloWorldClient(ManagedChannelBuilder<?> channelBuilder) {
+        channel = channelBuilder.build();
+        blockingStub = GreeterGrpc.newBlockingStub(channel);
     }
-  }
+
+    public void blockingGreet(String name) {
+        logger.info("Will try to greet " + name + " ...");
+        HelloRequest request = HelloRequest.newBuilder().setName(name).build();
+        try {
+            HelloReply response = blockingStub
+                    .sayHello(request);
+            logger.info("Greeting: " + response.getMessage());
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "RPC failed: {0}", e);
+            return;
+        }
+    }
+
+    public void shutdown() throws InterruptedException {
+        channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Greet server. If provided, the first element of {@code args} is the name to use in the
+     * greeting.
+     */
+    public static void main(String[] args) throws Exception {
+        BlockHelloWorldClient client = new BlockHelloWorldClient("localhost", 50051);
+        try {
+            /* Access a service running on the local machine on port 50051 */
+            String user = "world";
+            if (args.length > 0) {
+                user = args[0]; /* Use the arg as the name to greet if provided */
+            }
+            client.blockingGreet(user);
+            TimeUnit.SECONDS.sleep(5);
+        } finally {
+            client.shutdown();
+        }
+    }
 }
