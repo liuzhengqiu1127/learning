@@ -3,6 +3,7 @@ package com.lzq.study.lettcode;
 import org.junit.Test;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class SpringCodeCompetition {
@@ -106,5 +107,40 @@ public class SpringCodeCompetition {
     public void test(){
         int[] prints = getTriggerTime(new int[][]{{1,1,1}},new int[][]{{0,0,0}});
         for (int print : prints) System.out.println(print);
+    }
+
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    public int[][] highestPeak(int[][] isWater){
+        int m = isWater.length, n = isWater[0].length, cnt = 0, height = 0;
+        int[][] heights = new int[m][n];
+        LinkedList<int[]> cords = new LinkedList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (isWater[i][j] == 1) {
+                    cords.offer(new int[]{i, j});
+                    cnt++;
+                } else {
+                    heights[i][j] = -1;
+                }
+            }
+        }
+        while (!cords.isEmpty()){
+            int size = cords.size();
+            height++;
+            for (int i = 0; i < size; i++){
+                int[] cord = cords.pollFirst();
+                for (int[] dir : dirs){
+                    int x = cord[0]+dir[0];
+                    int y = cord[1]+dir[1];
+                    if (x >= 0 && x < m && y >= 0 && y < n && heights[x][y] == -1){
+                        cnt++;
+                        heights[x][y] = height;
+                        cords.offer(new int[]{x,y});
+                    }
+                    if (cnt == m*n) return heights;
+                }
+            }
+        }
+        return heights;
     }
 }
