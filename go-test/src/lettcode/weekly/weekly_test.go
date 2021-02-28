@@ -21,3 +21,10 @@ func TestMinimumSize(t *testing.T) {
 	t.Logf("minimumSize result=%d\n",minimumSize([]int{2,4,8,2},4))
 	t.Logf("minimumSize result=%d\n",minimumSize([]int{7,17},2))
 }
+
+func TestCountMatches(t *testing.T)  {
+	t.Logf("countMatches result=%d\n",countMatches([][]string{{"phone","blue","pixel"},
+		{"computer","silver","lenovo"},{"phone","gold","iphone"}},"color","silver"))
+	t.Logf("countMatches result=%d\n",countMatches([][]string{{"phone","blue","pixel"},
+		{"computer","silver","lenovo"},{"phone","gold","iphone"}},"type","phone"))
+}
