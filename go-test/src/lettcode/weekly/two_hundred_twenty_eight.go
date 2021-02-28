@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func minOperations(s string) int {
 	var result = 0
 	var first = s[0]
@@ -63,18 +61,4 @@ func check(nums []int, cost int, maxOperations int) bool  {
 		}
 	}
 	return count <= maxOperations
-}
-
-func main() {
-	fmt.Printf("minOperations result=%d\n",minOperations("0100"))
-	fmt.Printf("minOperations result=%d\n",minOperations("10"))
-	fmt.Printf("minOperations result=%d\n",minOperations("001010"))
-
-	fmt.Printf("countHomogenous result=%d\n",countHomogenous("abbcccaa"))
-	fmt.Printf("countHomogenous result=%d\n",countHomogenous("xy"))
-	fmt.Printf("countHomogenous result=%d\n",countHomogenous("zzzzz"))
-
-	fmt.Printf("minimumSize result=%d\n",minimumSize([]int{9},2))
-	fmt.Printf("minimumSize result=%d\n",minimumSize([]int{2,4,8,2},4))
-	fmt.Printf("minimumSize result=%d\n",minimumSize([]int{7,17},2))
 }
