@@ -28,3 +28,13 @@ func TestCountMatches(t *testing.T)  {
 	t.Logf("countMatches result=%d\n",countMatches([][]string{{"phone","blue","pixel"},
 		{"computer","silver","lenovo"},{"phone","gold","iphone"}},"type","phone"))
 }
+
+func TestCheckOnesSegment(t *testing.T){
+	t.Logf("checkOnesSegment result=%t\n",checkOnesSegment("1001"))
+	t.Logf("checkOnesSegment result=%t\n",checkOnesSegment("110"))
+}
+
+func TestMinElements(t *testing.T){
+	t.Logf("minElements result=%d\n",minElements([]int{1,-1,1},3,-4))
+	t.Logf("minElements result=%d\n",minElements([]int{1,-10,9,1},100,0))
+}
